@@ -6,7 +6,7 @@ const schema = {
       name: {type: "string"},
       email: {type: "string"},
       password:{type:"string"},
-      country:{type:"string"}
+      country:{enum:["india","us","russia","mangolia","nepal"]}
     },
     required: ["name","email","password","country"],
     additionalProperties: false
