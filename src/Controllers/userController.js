@@ -31,13 +31,16 @@ const loginUser = async (req, res) => {
 
 const getUserData = async (req, res) => {
     try {
-        let token = req.body.token
-      let decoded = jwt.verify(token, "secret")
-      let findUser = await userModel.findOne({_id:decoded._id})
-      console.log(findUser);
-
-        // let userData = userModel.findById( )
-       return res.status(200).send({ status: true, message: "user data get succesfully", data:findUser })
+    
+    let bearerToken = req.headers.authorization
+      if(bearerToken !== undefined){
+        const bearer = bearerToken.split(' ')
+        const token = bearer[1]
+        let decoded = jwt.verify(token, "secret")
+        let findUser = await userModel.findOne({_id:decoded._id})
+         return res.status(200).send({ status: true, message: "user data get succesfully", data:findUser })
+      }
+     
     }
 
     catch (error) {
