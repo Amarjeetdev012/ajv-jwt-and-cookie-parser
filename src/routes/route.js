@@ -10,5 +10,13 @@ router.post("/register", validateSchema(userRegisterSchema), UserController.regi
 router.post("/login", validateSchema(userLoginSchema),   UserController.loginUser)
 router.post("/profile",  UserController.getUserData)
 
+router.get("/", (req,res) => {
+   res.cookie("hello", "duniya", {
+    httpOnly:true
+   })
+  console.log(req.cookies)
+})
+
+
 
 module.exports = router
