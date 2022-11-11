@@ -18,13 +18,14 @@ const loginUser = async (req, res) => {
     try {
         let data = req.body
         let user = await userModel.findOne({ email: data.email }).select({ _id: 1 })
-        const token = jwt.sign({ _id: user }, "secret", { expiresIn: '12h' });
+        const token = jwt.sign({ _id: user }, "secret", { expiresIn: '10m' });
         data.token = token
 
         // syntax res.cookie("name", value, {options}) 
 
         res.cookie("token", token,{
-            maxAge:9600
+            maxAge:9600,
+            httpOnly:true
         })
         // console.log(req.cookies.token)
         res.status(200).send({ status: true, message: "user login succesfully", data: data })
@@ -42,7 +43,7 @@ const getUserData = async (req, res) => {
         let token = req.cookies.token
         console.log(token)
         if(!token){
-            return res.status(400).send({status:false,message:"please provide token or token has expired or login again"})
+            return res.status(401).send({status:false,message:"please provide token or token has expired or login again"})
         }
             let decoded = jwt.verify(token, "secret")
             let findUser = await userModel.findOne({ _id: decoded._id._id })
